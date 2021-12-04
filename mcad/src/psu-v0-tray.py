@@ -21,7 +21,7 @@ z = 29
 # Hole for power LED.
 ledd = 3.3
 led = combine(
-    cylinder(r=ledd / 2, h=wt + 2),
+    cylinder(r=ledd / 2, h=wt * 2 + 2),
     hole(),
     rotate(-90, [1, 0, 0]),
     translate([x - wt * 4, -1, z - wt * 4]),
