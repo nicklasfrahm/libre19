@@ -3,6 +3,7 @@ from solid.utils import *
 from euclid3 import *
 
 from lib.utils import combine, build
+from lib.sketch import arc2d
 
 ## Tunable design parameters.
 # Wall thickness.
@@ -17,15 +18,6 @@ ht = 5
 x = 62
 y = 110
 z = 29
-
-# Hole for power LED.
-ledd = 3.3
-led = combine(
-    cylinder(r=ledd / 2, h=wt * 2 + 2),
-    hole(),
-    rotate(-90, [1, 0, 0]),
-    translate([x - wt * 4, -1, z - wt * 4]),
-)
 
 # C14 socket.
 c14x = 31 + ltol
@@ -62,22 +54,39 @@ notch = combine(
 
 # Handle for removal from rack assembly.
 handle = combine(
-    cube([ht, ht * 3, z]),
-    translate([0, -ht * 3, 0]),
+    polygon(
+        [
+            Point2(0, 0),
+            Point2(ht, 0),
+            *arc2d(Point2(ht * 2, -ht * 2), r=ht, start_deg=180, stop_deg=270),
+            *arc2d(Point2(x - ht * 2, -ht * 2), r=ht, start_deg=270, stop_deg=360),
+            Point2(x - ht, 0),
+            Point2(x, 0),
+            *arc2d(Point2(x - ht * 2, -ht * 2), r=ht * 2, start_deg=360, stop_deg=270),
+            *arc2d(Point2(ht * 2, -ht * 2), r=ht * 2, start_deg=270, stop_deg=180),
+        ],
+    ),
+    linear_extrude(ht),
+    rotate(180, [0, 0, 1]),
+    translate([x, y, 0]),
 )
-handle = handle + combine(
-    cube([ht + 2, ht * 2, z - ht * 2]),
+
+# Hole for power LED.
+ledd = 3.3
+led = combine(
+    cylinder(r=ledd / 2, h=wt * 2 + 2),
     hole(),
-    translate([-1, -ht * 2, ht]),
+    rotate(-90, [1, 0, 0]),
+    translate([x - wt * 4, y - wt - 1, z - wt * 4]),
 )
 
 # Outlet for 12V power cables.
 od = 4
 outlet = combine(
-    cylinder(r=od / 2, h=wt + 2),
+    cylinder(r=od / 2, h=wt * 2 + 2),
     hole(),
     rotate(-90, [1, 0, 0]),
-    translate([(x - od) / 2, y - wt - 1, (z - od) / 2]),
+    translate([x - wt * 4, -1, z - wt * 4]),
 )
 
 

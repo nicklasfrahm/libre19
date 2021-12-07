@@ -17,3 +17,7 @@ watch:
         make --no-print-directory $(TARGET); \
         inotifywait -qre close_write .; \
     done
+
+# Clean up build outputs.
+clean:
+	-rm -rf $(MCAD_DIR)/build

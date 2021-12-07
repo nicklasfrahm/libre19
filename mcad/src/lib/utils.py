@@ -1,4 +1,4 @@
-from os import mkdir
+from os import makedirs
 from errno import EEXIST
 from solid import scad_render_to_file
 
@@ -8,12 +8,7 @@ def build(obj, script, resolution=512):
 
     # Create output directory.
     directory = f"build/scad"
-    try:
-        mkdir(directory)
-    except OSError as err:
-        # Ignore errors if the directory exists already.
-        if err.errno != EEXIST:
-            raise err
+    makedirs(directory, exist_ok=True)
 
     # Render script to output file.
     scad_render_to_file(

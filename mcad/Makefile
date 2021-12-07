@@ -11,6 +11,5 @@ build/scad/%.scad: $(PYTHON) src/%.py
 
 # Generate STL file.
 build/stl/%.stl: build/scad/%.scad
-# TODO: Fix this.
 	@mkdir -p $(@D)
 	openscad -o $@ -D 'quality="production"' $^
