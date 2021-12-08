@@ -1,5 +1,4 @@
 from os import makedirs
-from errno import EEXIST
 from solid import scad_render_to_file
 
 

@@ -91,19 +91,17 @@ outlet = combine(
 
 
 def obj():
-    return color("violet")(
-        union()(
-            case,
-            support,
-            notch,
-            handle,
-            c14,
-            led,
-            outlet,
-        )
+    return union()(
+        case,
+        support,
+        notch,
+        handle,
+        c14,
+        led,
+        outlet,
     )
 
 
-# Boilerplate code to exportthe file as `.scad` file if invoked as a script.
+# Boilerplate code to export the file as `.scad` file if invoked as a script.
 if __name__ == "__main__":
     build(obj(), __file__)
