@@ -6,11 +6,11 @@ import netstack_v0_tplink_sg108e_case
 
 ## Static design parameters. All units in mm.
 # Define outside dimensions.
-x = 225
+x = 222
 y = 140
 z = 88.9
 # Define switch dimensions.
-sx = 163
+sx = 162
 sy = 150
 sz = 28
 # Define fan dimensions.
@@ -28,6 +28,7 @@ rz = 24
 
 ## Tunable parameters.
 # Wall thickness.
+# TODO: Replace with extrusion width ew = 0.4.
 wt = 2
 # Offsets.
 ox = 1
@@ -35,36 +36,39 @@ ox = 1
 frame = cube([x, y, z])
 
 switch = cube([sx, sy + 1, sz])
-netgear = translate([px + wt * 2, -1, sz + wt * 2])(switch)
+netgear = translate([px + wt * 1.5, -1, wt])(switch)
 
 router = cube([rx, ry + 1, rz])
 manager = translate([px + wt * 2 + ox, -1, z - rz - wt])(router)
 seeed = translate([px + rx + wt * 3 + ox, -1, z - rz - wt])(router)
 
-fan = translate([x - fx - wt, -1, z - fz - wt])(cube([fx, fy + 1, fz]))
+fan = combine(
+    cube([fx, fy + 1, fz]),
+    translate([x - fx - 1, -1, z - fz - wt]),
+)
 
 # Assemble TP-Link network switch.
 tplink_slot = combine(
     cube([sx, sy + 1, sz]),
-    translate([px + wt * 2, -1, wt]),
+    translate([px + wt * 1.5, -1, sz + wt * 2]),
 )
 tplink_case = combine(
     netstack_v0_tplink_sg108e_case.obj(),
     color("#66bb6a"),
-    translate([px + wt * 2, 0, sz + wt * 2]),
+    translate([px + wt * 1.5, 0, sz + wt * 2]),
 )
 
 # Assemble power supply.
 psu_slot = combine(
     cube([px, py + 1, pz]),
-    translate([wt, -1, 10 + wt]),
+    translate([wt / 2, -1, 10 + wt]),
 )
 psu_case = combine(
     netstack_v0_psu_case.obj(),
     color("#ef5350"),
     rotate(180, [0, 0, 1]),
     rotate(90, [0, 1, 0]),
-    translate([wt, 110, 10 + wt]),
+    translate([wt / 2, 110, 10 + wt]),
 )
 
 

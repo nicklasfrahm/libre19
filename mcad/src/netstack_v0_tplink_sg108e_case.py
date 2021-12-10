@@ -3,16 +3,14 @@ from euclid3 import *
 from lib.utils import build, combine
 
 ## Tunable design parameters.
-# Wall thickness.
-wt = 2
-# Linear tolerance for 3D printing.
-ltol = 0.25
+# Extrusion width.
+ew = 0.4
 # Handle thickness.
 ht = 5
 
 ## Static design parameters. All units in mm.
 # Define perimeter dimensions.
-x = 163
+x = 162
 y = 150
 z = 28
 
@@ -23,16 +21,16 @@ sz = 26
 
 body = cube([x, y, z])
 
-# Create space for network switch.
+# Create pocket for network switch.
 body -= combine(
-    cube([x - wt * 1.6, sy + wt * 2 + 0.6, 1 + z - wt]),
-    translate([wt * 0.8, wt * 2, wt]),
+    cube([x - 6 * ew, 101 + ew * 1.5, 1 + z - ew * 5]),
+    translate([ew * 3, ew * 10, ew * 5]),
 )
 
 # Create opening for ethernet ports.
 body -= combine(
-    cube([x - ht * 2, wt * 2 + 2, z - wt * 3]),
-    translate([ht, -1, wt * 2]),
+    cube([x - ht * 2, ew * 10 + 2, z - ew * 15]),
+    translate([ht, -1, ew * 10]),
 )
 
 
