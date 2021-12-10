@@ -2,6 +2,7 @@ from solid import *
 from euclid3 import *
 from lib.utils import build, combine
 import netstack_v0_psu_case
+import netstack_v0_tplink_sg108e_case
 
 ## Static design parameters. All units in mm.
 # Define outside dimensions.
@@ -31,12 +32,9 @@ wt = 2
 # Offsets.
 ox = 1
 
-print(x - sx - px - fx)
-
 frame = cube([x, y, z])
 
 switch = cube([sx, sy + 1, sz])
-tplink = translate([px + wt * 2, -1, wt])(switch)
 netgear = translate([px + wt * 2, -1, sz + wt * 2])(switch)
 
 router = cube([rx, ry + 1, rz])
@@ -45,8 +43,23 @@ seeed = translate([px + rx + wt * 3 + ox, -1, z - rz - wt])(router)
 
 fan = translate([x - fx - wt, -1, z - fz - wt])(cube([fx, fy + 1, fz]))
 
-psu_cutout = translate([wt, -1, 10 + wt])(cube([px, py + 1, pz]))
-psu_v0_case = combine(
+# Assemble TP-Link network switch.
+tplink_slot = combine(
+    cube([sx, sy + 1, sz]),
+    translate([px + wt * 2, -1, wt]),
+)
+tplink_case = combine(
+    netstack_v0_tplink_sg108e_case.obj(),
+    color("#66bb6a"),
+    translate([px + wt * 2, 0, sz + wt * 2]),
+)
+
+# Assemble power supply.
+psu_slot = combine(
+    cube([px, py + 1, pz]),
+    translate([wt, -1, 10 + wt]),
+)
+psu_case = combine(
     netstack_v0_psu_case.obj(),
     color("#ef5350"),
     rotate(180, [0, 0, 1]),
@@ -59,14 +72,15 @@ def obj():
     return union()(
         difference()(
             frame,
-            tplink,
+            tplink_slot,
+            psu_slot,
             netgear,
             fan,
-            psu_cutout,
             manager,
             seeed,
         ),
-        psu_v0_case,
+        psu_case,
+        tplink_case,
     )
 
 
