@@ -1,5 +1,4 @@
 from solid import *
-from solid.utils import *
 from euclid3 import *
 
 from lib.utils import combine, build
