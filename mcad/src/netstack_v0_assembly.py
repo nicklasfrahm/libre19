@@ -2,7 +2,7 @@ from solid import *
 from euclid3 import *
 from lib.utils import build, combine
 import netstack_v0_psu_case
-import netstack_v0_tplink_sg108e_case
+import netstack_v0_switch_case
 
 ## Static design parameters. All units in mm.
 # Define outside dimensions.
@@ -53,7 +53,7 @@ tplink_slot = combine(
     translate([px + wt * 1.5, -1, sz + wt * 2]),
 )
 tplink_case = combine(
-    netstack_v0_tplink_sg108e_case.obj(),
+    netstack_v0_switch_case.obj(),
     color("#66bb6a"),
     translate([px + wt * 1.5, 0, sz + wt * 2]),
 )

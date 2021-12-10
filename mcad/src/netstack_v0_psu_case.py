@@ -103,4 +103,4 @@ def obj():
 
 # Boilerplate code to export the file as `.scad` file if invoked as a script.
 if __name__ == "__main__":
-    build(obj(), __file__)
+    build(part(), __file__)
