@@ -1,20 +1,34 @@
 # Cremini
 
-Cremini is an open-source blade server. It is a combination of mechanical, electronic components, which are managed by an open-source firmware to allow for infrastructure automation.
+Cremini is an open-source blade server. It is a combination of mechanical and electronic components, which are managed by an open-source firmware to allow for infrastructure automation.
 
 ## Introduction
 
-The mechanical target platform is a 10 inch rack, sometimes also referred to as a _half-width rack_. You may find a comparison of a 10 inch and a 19 inch rack in [this graphic][img-10-vs-19-inch].
+The mechanical target platform is a 19-inch rack. You may find a comparison of a 10 inch and a 19 inch rack in [this graphic][img-10-vs-19-inch].
 
 ### Network stack
 
 One part of the project is a network stack, which provides a top of rack L3 router, network switches and power. Below, you may find a list of all final components and a picture of the current state.
 
-- [x] Refurbished old 60W 12VDC power supply with custom case
-- [ ] TP-LINK SG108E 1000BASE-T smart L2 network switch with case
-- [ ] NETGEAR GS308E 1000BASE-T managed L2 network switch with case
-- [ ] WT32-ETH01 chassis, power and thermal management with case
-- [ ] Seeed Dual-Gigabit NIC carrier board for compute module 4 with case
+- [x] Rack mount chassis
+  - [x] Appliance layout and size constraints
+  - [x] Compatibility concept with 10-inch half-rack
+  - [ ] Splitting into 3D-printable components
+- [x] Power supply
+  - [x] Compatibile with [YOUMILE AC-DC 12V6A][amazon-psu-youmile] or [ANGEEK AC-DC 12V6A][amazon-psu-angeek]
+  - [ ] Case for **DIY AC-DC 12V5A** power supply
+  - [ ] Case for **X115-Y65-Z40** power supplies
+- [ ] Network switches
+  - [ ] Compatibility with TP-LINK SG108E and NETGEAR GS308E
+  - [ ] Case for any 8-port switch
+- [ ] Chassis management
+  - [ ] Schematic for WT32-ETH01
+  - [ ] [Veroboard][wikipedia-veroboard] layout
+  - [ ] Firmware for WT32-ETH01
+  - [ ] Case for chassis management unit
+- [x] Router and firewall
+  - [x] Traffic management via [nftables][wiki-nftables]
+  - [ ] Case for [Seeed compute module router][seeed-cm4router]
 
 ![Network stack CAD preview][img-netstack]
 
@@ -40,3 +54,8 @@ This project is licensed under the terms of the [MIT license][file-license].
 [github-solidpython]: https://github.com/SolidCode/SolidPython
 [website-openscad]: https://openscad.org/
 [reddit-cura-cli]: https://www.reddit.com/r/Cura/comments/kxz6li/does_cura_have_any_sort_of_cli/
+[amazon-psu-youmile]: https://www.amazon.de/dp/B07TZY73H6
+[amazon-psu-angeek]: https://www.amazon.de/dp/B07KPK525R
+[wikipedia-veroboard]: https://en.wikipedia.org/wiki/Veroboard
+[wiki-nftables]: https://wiki.nftables.org/wiki-nftables/index.php/What_is_nftables%3F
+[seeed-cm4router]: https://www.seeedstudio.com/Rapberry-Pi-CM4-Dual-GbE-Carrier-Board-p-4874.html
