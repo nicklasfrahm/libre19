@@ -5,10 +5,13 @@ MCAD_DIR	:= mcad
 
 # Define shorthands for mechanical design targets.
 %.scad:
-	make -C $(MCAD_DIR) build/scad/$@
+	make --no-print-directory -C $(MCAD_DIR) build/scad/$@
 
 %.stl:
-	make -C $(MCAD_DIR) build/stl/$@
+	make --no-print-directory -C $(MCAD_DIR) build/stl/$@
+
+%.png:
+	make --no-print-directory -C $(MCAD_DIR) build/png/$@
 
 # Rerun target every time a file change is detected in the current directory.
 watch:

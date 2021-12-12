@@ -49,7 +49,7 @@ This project uses [SolidPython][github-solidpython] and [OpenSCAD][website-opens
 This project is licensed under the terms of the [MIT license][file-license].
 
 [file-license]: ./LICENSE.md
-[img-netstack]: ./docs/netstack_v0.png
+[img-netstack]: ./docs/netstack_v0_assembly.png
 [img-10-vs-19-inch]: https://upload.wikimedia.org/wikipedia/commons/8/84/19_inch_vs_10_inch_rack_dimensions.svg
 [github-solidpython]: https://github.com/SolidCode/SolidPython
 [website-openscad]: https://openscad.org/

@@ -7,9 +7,15 @@ $(PYTHON):
 
 # Transpile Python code to OpenSCAD program.
 build/scad/%.scad: $(PYTHON) src/%.py
+	@mkdir -p $(@D)
 	./$^
 
 # Generate STL file.
 build/stl/%.stl: build/scad/%.scad
 	@mkdir -p $(@D)
 	openscad -o $@ -D 'quality="production"' $^
+
+# Generate PNG file.
+build/png/%.png: build/scad/%.scad
+	@mkdir -p $(@D)
+	openscad -o $@ --imgsize 1024,1024 $^

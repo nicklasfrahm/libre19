@@ -1,25 +1,29 @@
-from os import makedirs
-from solid import scad_render_to_file
+"""
+Utilities for building the SCAD files and creating objects.
+"""
+from solid import OpenSCADObject, scad_render_to_file
 
 
 def build(obj, script, resolution=512):
+    """
+    Renders an OpenSCAD object to a file in the build directory.
+    """
+    # Replace file extension of the invoked Python file.
     filename = script.split("/")[-1].replace(".py", ".scad")
-
-    # Create output directory.
-    directory = f"build/scad"
-    makedirs(directory, exist_ok=True)
 
     # Render script to output file.
     scad_render_to_file(
         obj,
-        f"{directory}/{filename}",
+        f"build/scad/{filename}",
         file_header=f"$fn = {resolution};",
         include_orig_code=False,
     )
 
 
-def combine(*transforms):
-    """Combine an object with the list of transforms."""
+def combine(*transforms: OpenSCADObject):
+    """
+    Combine an object with the list of transforms.
+    """
     # The first operation must be an OpenSCAD object.
     obj = transforms[0]
 
