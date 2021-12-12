@@ -37,15 +37,14 @@ def dim_z(dim: float) -> float:
 
 ## Static design parameters. All units in mm.
 # Define perimeter dimensions.
-X = 162
+X = 170
 Y = 150
-Z = 28
+Z = 30
 
 # Define switch pocket dimensions.
 SX = 158
 SY = 101.25
-SZ = 26.1
-SZB = 27.2
+SZ = 26.15
 
 # Define body solid.
 body: OpenSCADObject = cube([X, Y, Z])
@@ -53,14 +52,26 @@ body: OpenSCADObject = cube([X, Y, Z])
 # Create pocket for network switch.
 SXT = dim_xy(SX) + EW * 2
 SYT = dim_xy(SY) + EW * 2
+SZT = dim_z(Z - SZ)
 body -= combine(
     cube([SXT, SYT, SZ + 2]),
-    translate([(X - SXT) / 2, EW * 10, dim_z(Z - SZ)]),
+    translate([(X - SXT) / 2, EW * 10, SZT]),
+)
+
+# Create a pocket to account for NETGEAR SG308E sheet metal fold.
+SMY = 11
+SMZ = 27.45
+SMYT = dim_xy(SMY) + EW * 2
+SMZT = dim_z(Z - SMZ)
+body -= combine(
+    cube([SXT, SMYT, SMZ]),
+    translate([(X - SXT) / 2, SYT + EW * 10 - SMYT, SMZT]),
 )
 
 # Create opening for ethernet ports.
+SEZ = dim_z(Z - LH * 24)
 body -= combine(
-    cube([X - HT * 2, EW * 10 + 2, dim_z(Z - LH * 24)]),
+    cube([X - HT * 2, EW * 10 + 2, SEZ]),
     translate([HT, -1, LH * 18]),
 )
 

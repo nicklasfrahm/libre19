@@ -1,91 +1,107 @@
-from solid import *
-from euclid3 import *
+"""
+An assembly of all the components of the network stack.
+"""
+from solid import OpenSCADObject, cube
+from solid.objects import translate, rotate, color
 from lib.utils import build, combine
+from lib.units import rxxu, r19o
 import netstack_v0_psu_case
 import netstack_v0_switch_case
 
-## Static design parameters. All units in mm.
-# Define outside dimensions.
-x = 222
-y = 140
-z = 88.9
-# Define switch dimensions.
-sx = 162
-sy = 150
-sz = 28
-# Define fan dimensions.
-fx = 25
-fy = 80
-fz = 80
-# Define PSU dimensions.
-px = 29
-py = 150
-pz = 62
-# Define router dimensions.
-rx = 79
-ry = 70
-rz = 24
-
-## Tunable parameters.
+## Tunable design parameters.
 # Wall thickness.
-# TODO: Replace with extrusion width ew = 0.4.
-wt = 2
-# Offsets.
-ox = 1
+WT = 10
 
-frame = cube([x, y, z])
-
-switch = cube([sx, sy + 1, sz])
-netgear = translate([px + wt * 1.5, -1, wt])(switch)
-
-router = cube([rx, ry + 1, rz])
-manager = translate([px + wt * 2 + ox, -1, z - rz - wt])(router)
-seeed = translate([px + rx + wt * 3 + ox, -1, z - rz - wt])(router)
-
-fan = combine(
-    cube([fx, fy + 1, fz]),
-    translate([x - fx - 1, -1, z - fz - wt]),
+# Create solid based on the desired appliance size.
+X = 400
+Y = 150
+Z = rxxu(2)
+solid = combine(
+    cube([X, Y, Z]),
 )
 
-# Assemble TP-Link network switch.
-tplink_slot = combine(
-    cube([sx, sy + 1, sz]),
-    translate([px + wt * 1.5, -1, sz + wt * 2]),
+# Add mouting pads.
+MX = r19o(1)
+MY = WT
+MZ = Z
+mount = combine(
+    cube([MX, MY, MZ]),
+    translate([(X - MX) / 2, 0, 0]),
 )
-tplink_case = combine(
-    netstack_v0_switch_case.obj(),
-    color("#66bb6a"),
-    translate([px + wt * 1.5, 0, sz + wt * 2]),
-)
+solid += mount
 
-# Assemble power supply.
-psu_slot = combine(
-    cube([px, py + 1, pz]),
-    translate([wt / 2, -1, 10 + wt]),
+# Create slot for power supply.
+PX = 40
+PY = Y + 2
+PZ = 70
+solid -= combine(
+    cube([PX, PY, PZ]),
+    translate([WT, -1, WT]),
 )
-psu_case = combine(
+solid += combine(
     netstack_v0_psu_case.obj(),
     color("#ef5350"),
-    rotate(180, [0, 0, 1]),
     rotate(90, [0, 1, 0]),
-    translate([wt / 2, 110, 10 + wt]),
+    translate([WT, 0, PZ + WT]),
 )
 
+# Create slot for chassis management controller.
+CX = 40
+CY = Y + 2
+CZ = 70
+solid -= combine(
+    cube([CX, CY, CZ]),
+    translate([PX + WT * 2, -1, WT]),
+)
+solid += combine(
+    netstack_v0_psu_case.obj(),
+    color("#ef5350"),
+    rotate(90, [0, 1, 0]),
+    translate([WT, 0, PZ + WT]),
+)
 
-def obj():
-    return union()(
-        difference()(
-            frame,
-            tplink_slot,
-            psu_slot,
-            netgear,
-            fan,
-            manager,
-            seeed,
-        ),
-        psu_case,
-        tplink_case,
+# Create slots for network switches.
+SX = 170
+SY = Y + 2
+SZ = 30
+switch = cube([SX, SY, SZ])
+for i in range(2):
+    solid -= combine(
+        switch,
+        translate([WT * 4 + PX + CX, -1, WT + SZ * i + WT * i]),
     )
+    solid += combine(
+        netstack_v0_switch_case.obj(),
+        color("#66bb6a"),
+        translate([WT * 4 + PX + CX, 0, WT + SZ * i + WT * i]),
+    )
+
+# Create slot for network router.
+RX = 80
+RY = 80
+RZ = 25
+router = combine(
+    cube([RX, RY + 1, RZ]),
+    translate([X - RX - WT, -1, WT]),
+)
+solid -= router
+
+# Create slot for fan.
+FX = 80
+FY = 80
+FZ = 25
+fan = combine(
+    cube([FX, FY + 1, FZ]),
+    translate([X - FX - WT, -1, Z - FZ - WT]),
+)
+solid -= fan
+
+
+def obj() -> OpenSCADObject:
+    """
+    Retrieve part object when importing it into assemblies or similar.
+    """
+    return solid
 
 
 # Boilerplate code to export the file as `.scad` file if invoked as a script.

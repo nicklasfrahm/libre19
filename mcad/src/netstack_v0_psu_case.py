@@ -1,106 +1,106 @@
-from solid import *
-from euclid3 import *
-
+"""
+A case for the refurbished power supply of the network stack.
+"""
+from solid import OpenSCADObject
+from solid.objects import cube, cylinder, polygon, hole, translate, rotate
+from solid.utils import linear_extrude
+from euclid3 import Point2
 from lib.utils import combine, build
 from lib.sketch import arc2d
 
 ## Tunable design parameters.
 # Wall thickness.
-wt = 2
+WT = 2
 # Linear tolerance for 3D printing.
-ltol = 0.25
+TOL = 0.25
 # Handle thickness.
-ht = 5
+HT = 5
 
-## Static design parameters. All units in mm.
-# Define perimeter dimensions.
-x = 62
-y = 110
-z = 29
+# Create solid based on the desired appliance size.
+X = 62
+Y = 110
+Z = 29
+solid = cube([X, Y, Z])
 
-# C14 socket.
-c14x = 31 + ltol
-c14z = 24 + ltol
+# Create opening for C14 connector.
+C14X = 31 + TOL
+C14Z = 24 + TOL
 c14 = combine(
-    cube([c14x, wt * 2 + 2, c14z]),
-    hole(),
-    translate([(x - c14x) / 2, -1, wt + 1.5]),
+    cube([C14X, WT * 2 + 2, C14Z]),
+    translate([(X - C14X) / 2, Y - WT * 2 - 1, WT + 1.5]),
 )
+solid -= c14
 
-# Basic case without special features.1
-box = cube([x, y, z])
-cutout = combine(
-    cube([x - wt * 2, y - wt * 3, z]),
-    translate([wt, wt * 2, wt]),
+# Create slot for power supply.
+psu = combine(
+    cube([X - WT * 2, Y - WT * 3, Z]),
+    translate([WT, WT, WT]),
 )
-case = box - cutout
+solid -= psu
 
-# Support to lock C14 connector in place.
-sx = 25
-sy = 5
-sz = 1.5
+# Add support to lock C14 connector in place.
+SX = 25
+SY = 5
+SZ = 1.5
 support = combine(
-    cube([sx, sy, sz]),
-    translate([(x - sx) / 2, wt * 2, wt]),
+    cube([SX, SY, SZ]),
+    translate([(X - SX) / 2, Y - SY - WT * 2, WT]),
 )
+solid += support
 
-# Notch to lock PCB in place.
-noy = wt * 2 + 98
+# Add notch to lock PCB in place.
+NOY = Y - WT * 3 - 98
 notch = combine(
-    cube([x, y - noy, wt * 4]),
-    translate([0, noy, 0]),
+    cube([X, NOY, WT * 4]),
+    translate([0, WT, 0]),
 )
+solid += notch
 
-# Handle for removal from rack assembly.
+# Create hole for power LED.
+LEDD = 3.3
+led = combine(
+    cylinder(r=LEDD / 2, h=WT * 2 + 2),
+    rotate(-90, [1, 0, 0]),
+    translate([WT * 4, -1, Z - WT * 4]),
+)
+solid -= led
+
+# Outlet for 12V power cables.
+OD = 4
+outlet = combine(
+    cylinder(r=OD / 2, h=WT * 2 + 2),
+    hole(),
+    rotate(-90, [1, 0, 0]),
+    translate([WT * 4, Y - WT * 2 - 1, Z - WT * 4]),
+)
+solid -= outlet
+
+# Add handle for removal from rack assembly.
 handle = combine(
     polygon(
         [
             Point2(0, 0),
-            Point2(ht, 0),
-            *arc2d(Point2(ht * 2, -ht * 2), r=ht, start_deg=180, stop_deg=270),
-            *arc2d(Point2(x - ht * 2, -ht * 2), r=ht, start_deg=270, stop_deg=360),
-            Point2(x - ht, 0),
-            Point2(x, 0),
-            *arc2d(Point2(x - ht * 2, -ht * 2), r=ht * 2, start_deg=360, stop_deg=270),
-            *arc2d(Point2(ht * 2, -ht * 2), r=ht * 2, start_deg=270, stop_deg=180),
+            Point2(HT, 0),
+            *arc2d(Point2(HT * 2, -HT * 2), r=HT, start_deg=180, stop_deg=270),
+            *arc2d(Point2(X - HT * 2, -HT * 2), r=HT, start_deg=270, stop_deg=360),
+            Point2(X - HT, 0),
+            Point2(X, 0),
+            *arc2d(Point2(X - HT * 2, -HT * 2), r=HT * 2, start_deg=360, stop_deg=270),
+            *arc2d(Point2(HT * 2, -HT * 2), r=HT * 2, start_deg=270, stop_deg=180),
         ],
     ),
-    linear_extrude(ht),
-    rotate(180, [0, 0, 1]),
-    translate([x, y, 0]),
+    linear_extrude(HT),
 )
-
-# Hole for power LED.
-ledd = 3.3
-led = combine(
-    cylinder(r=ledd / 2, h=wt * 2 + 2),
-    hole(),
-    rotate(-90, [1, 0, 0]),
-    translate([x - wt * 4, y - wt - 1, z - wt * 4]),
-)
-
-# Outlet for 12V power cables.
-od = 4
-outlet = combine(
-    cylinder(r=od / 2, h=wt * 2 + 2),
-    hole(),
-    rotate(-90, [1, 0, 0]),
-    translate([x - wt * 4, -1, z - wt * 4]),
-)
+solid += handle
 
 
-def obj():
-    return union()(
-        case,
-        support,
-        notch,
-        handle,
-        c14,
-        led,
-        outlet,
-    )
+def obj() -> OpenSCADObject:
+    """
+    Retrieve part object when importing it into assemblies or similar.
+    """
+    return solid
 
 
 # Boilerplate code to export the file as `.scad` file if invoked as a script.
 if __name__ == "__main__":
-    build(part(), __file__)
+    build(obj(), __file__)
