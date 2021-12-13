@@ -2,11 +2,9 @@
 A case for the refurbished power supply of the network stack.
 """
 from solid import OpenSCADObject
-from solid.objects import cube, cylinder, polygon, hole, translate, rotate
-from solid.utils import linear_extrude
-from euclid3 import Point2
+from solid.objects import cube, cylinder, hole, translate, rotate
 from lib.utils import combine, build
-from lib.sketch import arc2d
+from lib.features import handle
 
 ## Tunable design parameters.
 # Wall thickness.
@@ -76,22 +74,7 @@ outlet = combine(
 solid -= outlet
 
 # Add handle for removal from rack assembly.
-handle = combine(
-    polygon(
-        [
-            Point2(0, 0),
-            Point2(HT, 0),
-            *arc2d(Point2(HT * 2, -HT * 2), HT, 180, 270),
-            *arc2d(Point2(X - HT * 2, -HT * 2), HT, 270, 360),
-            Point2(X - HT, 0),
-            Point2(X, 0),
-            *arc2d(Point2(X - HT * 2, -HT * 2), HT * 2, 360, 270),
-            *arc2d(Point2(HT * 2, -HT * 2), HT * 2, 270, 180),
-        ],
-    ),
-    linear_extrude(HT),
-)
-solid += handle
+solid += handle(X)
 
 
 def obj() -> OpenSCADObject:
