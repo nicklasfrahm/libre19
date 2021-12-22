@@ -43,7 +43,7 @@ Z = 30
 solid = cube([X, Y, Z])
 
 # Create pocket for network switch.
-SPX = dim_xy(158) + EW * 2
+SPX = dim_xy(158) + EW * 10
 SPY = dim_xy(101.25) + EW * 2
 SPZT = dim_z(Z - 26.15)
 solid -= combine(
@@ -59,14 +59,6 @@ EPZ = dim_z(Z - HT - LH)
 solid -= combine(
     cube([EX, EY, EZ]),
     translate([(X - EX) / 2, -1, HT]),
-)
-
-# Create a support for the ethernet port opening.
-SUPX = EW * 5
-SUPY = EW * 10
-solid += combine(
-    cube([SUPX, SUPY, Z]),
-    translate([(X - SUPX) / 2, 0, 0]),
 )
 
 # Create a pocket to account for NETGEAR SG308E sheet metal fold.
@@ -90,8 +82,8 @@ solid -= combine(
 SCX = 43.05
 SCY = 21.18
 SCZ = 5
-SCXT = dim_xy(SCX) + EW * 2
-SCYT = dim_xy(SCY) + EW * 2
+SCXT = dim_xy(SCX) + EW
+SCYT = dim_xy(SCY) + EW
 SCZT = dim_z(5)
 solid -= combine(
     cube([SCXT, SCYT, Z]),
@@ -101,7 +93,7 @@ solid -= combine(
 # Add power input port.
 PIX = 24.2
 PIY = 6.55
-PIZ = 4.5
+PIZ = 3.8
 PIOZ = 1.5
 PIXT = dim_xy(PIX) + EW * 2
 PIYT = dim_xy(PIY) + EW * 2
@@ -113,15 +105,15 @@ solid -= combine(
     translate([(X - SPX) / 2 + 30, Y - PIYT + 1, PIOZT]),
 )
 screw = combine(
-    cylinder(r=1.5 / 2, h=9 + 2),
+    cylinder(r=2 / 2, h=9 + 2),
 )
 solid -= combine(
     screw,
-    translate([(X - SPX) / 2 + 30 + 10.5, Y - 8.5, SWZ - 11 + 1]),
+    translate([(X - SPX) / 2 + 30 + 10.3, Y - 8, SWZ - 11 + 1]),
 )
 solid -= combine(
     screw,
-    translate([(X - SPX) / 2 + 30 + 10.5 + 7.5, Y - 8.5, SWZ - 11 + 1]),
+    translate([(X - SPX) / 2 + 30 + 10.3 + 7.6, Y - 8, SWZ - 11 + 1]),
 )
 
 # Add handles to solid.
