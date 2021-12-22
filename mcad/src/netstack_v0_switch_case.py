@@ -3,7 +3,7 @@ A case for a 1000BASE-T network switch. Compatibility tested with:
 - NETGEAR GS308E
 - TP-LINK SG108E
 """
-from solid import cube, translate, OpenSCADObject
+from solid import cube, cylinder, translate, OpenSCADObject
 from lib.utils import build, combine
 from lib.features import handle
 
@@ -70,25 +70,66 @@ solid += combine(
 )
 
 # Create a pocket to account for NETGEAR SG308E sheet metal fold.
-# SMY = 11
-# SMZ = 27.45
-# SMYT = dim_xy(SMY) + EW * 2
-# SMZT = dim_z(Z - SMZ)
-# solid -= combine(
-#     cube([SXT, SMYT, SMZ]),
-#     translate([(X - SXT) / 2, SYT + EW * 10 - SMYT, SMZT]),
-# )
+SFY = 11
+SFZ = Z - 27.45
+SFYT = dim_xy(SFY) + EW * 2
+SFZT = dim_z(SFZ)
+solid -= combine(
+    cube([SPX, SFYT, Z]),
+    translate([(X - SPX) / 2, EW * 10 + SPY - SFYT, SFZT]),
+)
 
-# TODO: Add power input port.
-# TODO: Add pocket for NETGEAR switch.
-# TODO: Add mount for DC-DC converter.
+# Create space for wiring.
+SWZ = dim_z(SPZT + 5)
+solid -= combine(
+    cube([SPX, Y - EW * 10 - (X - SPX) / 2, Z]),
+    translate([(X - SPX) / 2, EW * 10, SWZ]),
+)
+
+# Create pocket for DC-DC converter.
+SCX = 43.05
+SCY = 21.18
+SCZ = 5
+SCXT = dim_xy(SCX) + EW * 2
+SCYT = dim_xy(SCY) + EW * 2
+SCZT = dim_z(5)
+solid -= combine(
+    cube([SCXT, SCYT, Z]),
+    translate([(X - SCXT) / 2, EW * 10 + SPY + EW * 10, SCZ]),
+)
+
+# Add power input port.
+PIX = 24.2
+PIY = 6.55
+PIZ = 4.5
+PIOZ = 1.5
+PIXT = dim_xy(PIX) + EW * 2
+PIYT = dim_xy(PIY) + EW * 2
+PIZT = dim_z(PIZ) + LH
+PIOZT = dim_z(SWZ - PIOZ)
+PISD = 1
+solid -= combine(
+    cube([PIXT, PIYT + 1, PIZT]),
+    translate([(X - SPX) / 2 + 30, Y - PIYT + 1, PIOZT]),
+)
+screw = combine(
+    cylinder(r=1.5 / 2, h=9 + 2),
+)
+solid -= combine(
+    screw,
+    translate([(X - SPX) / 2 + 30 + 10.5, Y - 8.5, SWZ - 11 + 1]),
+)
+solid -= combine(
+    screw,
+    translate([(X - SPX) / 2 + 30 + 10.5 + 7.5, Y - 8.5, SWZ - 11 + 1]),
+)
 
 # Add handles to solid.
-HT = 50
-solid += handle(HT)
+HL = 50
+solid += handle(HL)
 solid += combine(
-    handle(HT),
-    translate([X - HT, 0, 0]),
+    handle(HL),
+    translate([X - HL, 0, 0]),
 )
 
 
