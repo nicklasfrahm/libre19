@@ -2,12 +2,18 @@
 Utilities for building the SCAD files and creating objects.
 """
 from solid import OpenSCADObject, scad_render_to_file
+from os import getenv
 
 
-def build(obj, script, resolution=512):
+def build(obj, script, segments=512):
     """
     Renders an OpenSCAD object to a file in the build directory.
     """
+    # Fetch output resolution.
+    resolution = getenv("RESOLUTION")
+    if resolution is not None:
+        segments = int(resolution)
+
     # Replace file extension of the invoked Python file.
     filename = script.split("/")[-1].replace(".py", ".scad")
 
@@ -15,7 +21,7 @@ def build(obj, script, resolution=512):
     scad_render_to_file(
         obj,
         f"build/scad/{filename}",
-        file_header=f"$fn = {resolution};",
+        file_header=f"$fn = {segments};",
         include_orig_code=False,
     )
 

@@ -8,7 +8,7 @@ def rxxu(factor: float = 1) -> float:
     The height of a single rack unit in a 10-inch or
     19-inch rack. Often also referred to as RU or U.
     """
-    return 44.50 * factor
+    return 44.45 * factor
 
 
 def rxxp(factor: float = 1) -> float:

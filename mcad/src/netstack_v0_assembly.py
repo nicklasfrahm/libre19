@@ -7,6 +7,7 @@ from lib.utils import build, combine
 from lib.units import rxxu, r19o
 import netstack_v0_psu_case
 import netstack_v0_switch_case
+import netstack_v0_switch_chassis
 
 ## Tunable design parameters.
 # Wall thickness.
@@ -29,6 +30,20 @@ mount = combine(
     translate([(X - MX) / 2, 0, 0]),
 )
 solid += mount
+
+# Add switch chassis.
+SCX = 190
+SCY = Y
+SCZ = rxxu(2)
+solid -= combine(
+    cube([SCX, SCY + 2, SCZ + 2]),
+    translate([110, -1, -1]),
+)
+solid += combine(
+    netstack_v0_switch_chassis.obj(),
+    color("#666"),
+    translate([110, 0, 0]),
+)
 
 # Create slot for power supply.
 PX = 40

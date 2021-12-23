@@ -1,4 +1,6 @@
-PYTHON	:= venv/bin/python3
+PYTHON		:= venv/bin/python3
+# Can be overwritten during development to improve preview rendering performance.
+RESOLUTION	?= 512
 
 # Configure virtual environment.
 $(PYTHON):

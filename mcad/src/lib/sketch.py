@@ -1,6 +1,7 @@
 """
 Utilities for creating shapes in 2D sketches.
 """
+from os import getenv
 from math import ceil, sin, cos, pi
 from euclid3 import Point2
 
@@ -12,13 +13,23 @@ def deg2rad(deg: float):
     return pi * (deg / 180)
 
 
-def arc2d(center=Point2(), radius=1, start=0, stop=90, segments=512):
+def arc2d(
+    center=Point2(),
+    radius=1,
+    start=0,
+    stop=90,
+    segments=512,
+):
     """
     Draws an arc of specified `radius` aroung the given `center` point
     from `start` to `end`, where both are angles given in degrees. The
     resolution of the arc can be adjusted via the segments parameter,
     which sets the number of points on a 360 degree full circle.
     """
+    resolution = getenv("RESOLUTION")
+    if resolution is not None:
+        segments = int(resolution)
+
     start = deg2rad(start)
     stop = deg2rad(stop)
     span = stop - start
