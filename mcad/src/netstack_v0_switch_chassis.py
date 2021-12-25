@@ -6,57 +6,50 @@ from solid.utils import forward, up, right
 from lib.utils import build, combine
 from lib.units import rxxu
 
-## Tunable design parameters.
-# Extrusion width.
-EW = 0.4
-# Layer height.
-LH = 0.15
-# Handle thickness.
-HT = 5
-# Wall thickness.
-WT = 10
+# Mounting bracket overlap.
+MBO = 10
+# Mounting screw hole radius.
+MSR = 2.5 / 2
+# Mounting screw hole depth.
+MSD = 10
 
 # Define body solid.
-X = 190
+X = 200
 Y = 150
-Z = rxxu(2)
+Z = rxxu(1)
 solid = cube([X, Y, Z])
 
-# Create slots for network switches.
+# Create slot for network switch.
 SX = 170
 SY = Y
-SZ = 30
-switch = cube([SX, SY + 2, SZ])
-for i in range(2):
-    solid -= combine(
-        switch,
-        translate([(X - SX) / 2, -1, WT + i * WT + i * SZ]),
-    )
+SZ = 37
+solid -= combine(
+    cube([SX, SY + 2, SZ]),
+    translate([(X - SX) / 2, -1, (Z - SZ) / 2]),
+)
 
 # Create corners for assembly.
-CX = X - SX + 2e-2
-CY = WT * 2
+CX = MBO * 2
+CY = MBO * 2
 CZ = Z
 corner = combine(
     cube([CX, CY, CZ + 2], center=True),
     up(Z / 2),
 )
-SR = 2.5 / 2
-SH = 10
-SYO = -(CY / 2 + SH)
+MSO = -(CY / 2 + MSD)
 screw = combine(
-    cylinder(r=SR, h=CY + 2 * SH),
+    cylinder(r=MSR, h=CY + 2 * MSD),
     rotate(-90, [1, 0, 0]),
 )
-for i in range(3):
+for i in range(2):
     corner += combine(
         screw,
-        translate([5, SYO, 5 + i * SZ + i * 10]),
+        translate([5, MSO, 5 + i * Z - i * 10]),
     )
-for i in range(3):
+for i in range(2):
     corner += combine(
         screw,
-        translate([-5, SYO, 5 + i * SZ + i * 10]),
+        translate([-5, MSO, 5 + i * Z - i * 10]),
     )
 solid -= corner
 solid -= combine(
@@ -72,6 +65,14 @@ solid -= combine(
     corner,
     right(X),
 )
+
+# Add notches to lock switch in place.
+NY = 112
+for i in range(2):
+    solid += combine(
+        cube([10, Y - NY, Z]),
+        translate([(X - SX) / 2 + i * (SX - MBO), NY, 0]),
+    )
 
 
 def obj() -> OpenSCADObject:
