@@ -20,12 +20,22 @@ Z = rxxu(1)
 solid = cube([X, Y, Z])
 
 # Create slot for network switch.
-SX = 170
+SX = 163
 SY = Y
-SZ = 37
+SZ = 28
 solid -= combine(
     cube([SX, SY + 2, SZ]),
     translate([(X - SX) / 2, -1, (Z - SZ) / 2]),
+)
+
+# Create slot for foam padding.
+FT = 5
+FX = SX + FT * 2
+FY = SY + FT * 2
+FZ = SZ + FT * 2
+solid -= combine(
+    cube([FX, FY, FZ]),
+    translate([(X - FX) / 2, 20, (Z - FZ) / 2]),
 )
 
 # Create corners for assembly.
@@ -67,12 +77,22 @@ solid -= combine(
 )
 
 # Add notches to lock switch in place.
-NY = 112
+NX = (FX - SX) / 2 + 15
+NY = 102
 for i in range(2):
     solid += combine(
-        cube([10, Y - NY, Z]),
-        translate([(X - SX) / 2 + i * (SX - MBO), NY, 0]),
+        cube([NX, Y - NY, Z]),
+        translate([(X - FX) / 2 + i * (FX - NX), NY, 0]),
     )
+
+# Create slot for back cover.
+BX = FX - NX * 2 + 2 * 2
+BY = 2
+BZ = FZ
+solid -= combine(
+    cube([BX, BY, BZ]),
+    translate([(X - BX) / 2, Y - BY * 2, (Z - FZ) / 2]),
+)
 
 
 def obj() -> OpenSCADObject:
