@@ -19,7 +19,7 @@ def rxxp(factor: float = 1) -> float:
     return 15.875 * factor
 
 
-def rxxw(factor: float = 1) -> float:
+def rxxr(factor: float = 1) -> float:
     """
     The horizontal width of the mounting rail in a
     10-inch or 19-inch rack.
