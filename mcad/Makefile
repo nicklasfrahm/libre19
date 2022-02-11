@@ -1,6 +1,6 @@
 PYTHON		:= venv/bin/python3
 # Can be overwritten during development to improve preview rendering performance.
-RESOLUTION	?= 512
+RESOLUTION	?= 8
 
 # Configure virtual environment.
 $(PYTHON):
@@ -15,6 +15,7 @@ build/scad/%.scad: $(PYTHON) src/%.py
 # Generate STL file.
 build/stl/%.stl: build/scad/%.scad
 	@mkdir -p $(@D)
+	@echo "building with resolution: $(RESOLUTION) steps/revolution"
 	openscad -o $@ -D 'quality="production"' $^
 
 # Generate PNG file.
