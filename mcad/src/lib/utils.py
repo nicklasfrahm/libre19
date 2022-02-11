@@ -1,11 +1,12 @@
 """
 Utilities for building the SCAD files and creating objects.
 """
-from solid import OpenSCADObject, scad_render_to_file
 from os import getenv
+from pathlib import Path
+from solid import OpenSCADObject, scad_render_to_file, import_
 
 
-def build(obj, script, segments=512):
+def build(obj, script, segments=32):
     """
     Renders an OpenSCAD object to a file in the build directory.
     """
@@ -24,6 +25,13 @@ def build(obj, script, segments=512):
         file_header=f"$fn = {segments};",
         include_orig_code=False,
     )
+
+
+def stl(path: str, convexity: int = 4) -> OpenSCADObject:
+    """
+    Load an STL file into an OpenSCAD object.
+    """
+    return import_(str(Path(path).resolve()), convexity=convexity)
 
 
 def combine(*transforms: OpenSCADObject):

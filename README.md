@@ -42,7 +42,15 @@ This project uses [SolidPython][github-solidpython] and [OpenSCAD][website-opens
 
 - [x] SCAD code generation via `make netstack_v0_assembly.scad`
 - [x] STL file generation via `make netstack_v0_assembly.stl`
+- [ ] Automatic deployment of STL files to [Thingiverse][thingiverse]
 - [ ] GCODE generation, possibly via [CURA engine][reddit-cura-cli]
+
+## Attributions
+
+Some files in this directory were vendored from [Thingiverse][website-thingiverse]. Please find the original creators below.
+
+- [2.5 inch drive tray `mcad/vendor/proliant_tray_2in.stl`](https://www.thingiverse.com/thing:4241436) by [Ian Glen](https://www.thingiverse.com/codethatthinks/designs)
+- [3.5 inch drive tray `mcad/vendor/proliant_tray_3in.stl`](https://www.thingiverse.com/thing:4656921) by [Philipp losansky](https://www.thingiverse.com/bluebeardking/designs)
 
 ## License
 
@@ -59,3 +67,4 @@ This project is licensed under the terms of the [MIT license][file-license].
 [wikipedia-veroboard]: https://en.wikipedia.org/wiki/Veroboard
 [wiki-nftables]: https://wiki.nftables.org/wiki-nftables/index.php/What_is_nftables%3F
 [seeed-cm4router]: https://www.seeedstudio.com/Rapberry-Pi-CM4-Dual-GbE-Carrier-Board-p-4874.html
+[website-thingiverse]: https://www.thingiverse.com
