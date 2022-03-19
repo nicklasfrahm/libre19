@@ -1,5 +1,5 @@
 """
-A chassis to hold two network switch cases.
+A 2.5-inch drive tray for the HP Proliant DL180 G6.
 """
 from solid import OpenSCADObject, cube, translate
 from lib.utils import build, stl, combine
