@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "JLCPCB")(type "KiCad")(uri "${KIPRJMOD}/../jlcpcb.pretty")(options "")(descr "A library of frequently used JLCPCB components."))
+)

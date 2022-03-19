@@ -1,0 +1,8 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ESP32-S2FH4
+K ESP32 MCU
+F https://datasheet.lcsc.com/lcsc/2108231830_Espressif-Systems-ESP32-S2FH4_C2840995.pdf
+$ENDCMP
+#
+#End Doc Library
