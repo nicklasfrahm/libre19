@@ -4,6 +4,8 @@ RESOLUTION	?= 8
 
 # Configure virtual environment.
 $(PYTHON):
+	dpkg-query -W python3-venv
+	dpkg-query -W python3-pip
 	python3 -m venv --prompt mcad venv
 	$@ -m pip install --upgrade -r requirements.txt
 

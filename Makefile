@@ -1,7 +1,8 @@
 PROJECT		:= cremini
 MCAD_DIR	:= mcad
 
-.PHONY: watch
+.PHONY: all
+all: dl180_g6_tray_2in.stl
 
 # Define shorthands for mechanical design targets.
 %.scad:
@@ -14,6 +15,7 @@ MCAD_DIR	:= mcad
 	make --no-print-directory -C $(MCAD_DIR) build/png/$@
 
 # Rerun target every time a file change is detected in the current directory.
+.PHONY: watch
 watch:
 	while true; do \
 		clear; \
@@ -22,5 +24,6 @@ watch:
     done
 
 # Clean up build outputs.
+.PHONY: clean
 clean:
 	-rm -rf $(MCAD_DIR)/build
