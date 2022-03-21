@@ -2,7 +2,7 @@
 
 This repository contains a variety of hardware components that I use to deploy my homelab.
 
-The mechanical target platform is either a 10-inch half-rack or a full-width 19-inch rack depending on the size of the site. You may find a comparison of a 10 inch and a 19 inch rack in [this graphic][img-10-vs-19-inch].
+The mechanical target platform is either a 10-inch half-rack or a full-width 19-inch rack depending on the size of the site. You may find a comparison of a 10-inch and a 19-inch rack in [this graphic][img-10-vs-19-inch].
 
 ## Components 📦
 
