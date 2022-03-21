@@ -19,7 +19,7 @@ This project uses [SolidPython][github-solidpython] and [OpenSCAD][website-opens
 
 - [x] SCAD code generation via `make netstack_v0_assembly.scad`
 - [x] STL file generation via `make netstack_v0_assembly.stl`
-- [ ] Automatic deployment of STL files to [Thingiverse][thingiverse]
+- [ ] Automatic deployment of STL files to [Thingiverse][website-thingiverse]
 - [ ] GCODE generation, possibly via [CURA engine][reddit-cura-cli]
 
 ## Attributions ❤️
