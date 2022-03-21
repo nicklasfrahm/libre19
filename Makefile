@@ -17,6 +17,7 @@ all: dl180_g6_tray_2in.stl
 # Rerun target every time a file change is detected in the current directory.
 .PHONY: watch
 watch:
+	dpkg-query -W inotify-tools
 	while true; do \
 		clear; \
         make --no-print-directory $(TARGET); \
