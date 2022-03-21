@@ -5,9 +5,10 @@ from os import getenv
 from math import ceil, sin, cos, pi
 from euclid3 import Point2
 from solid import OpenSCADObject
-from solid.objects import polygon
-from solid.utils import linear_extrude
+from solid.objects import polygon, cube, cylinder
+from solid.utils import linear_extrude, rotate, translate, up, forward, right
 from .utils import combine
+from .units import rxxu
 
 
 def deg2rad(deg: float):
@@ -69,3 +70,65 @@ def handle(length=50, width=5) -> OpenSCADObject:
         ),
         linear_extrude(width),
     )
+
+
+def corner(height: int = 1):
+    """
+    Create a corner that allows to connect two parts via M3 screws.
+    """
+    # Mounting bracket overlap.
+    mbo = 10
+    # Mounting screw hole radius.
+    msr = 2.5 / 2
+    # Mounting screw hole depth.
+    msd = 10
+
+    # Create corner.
+    c_x = mbo * 2
+    c_y = mbo * 2
+    c_z = rxxu(height)
+    solid = combine(
+        cube([c_x, c_y, c_z + 2], center=True),
+        up(c_z / 2),
+    )
+    mso = -(c_y / 2 + msd)
+    screw = combine(
+        cylinder(r=msr, h=c_y + 2 * msd),
+        rotate(-90, [1, 0, 0]),
+    )
+    for i in range(2):
+        solid += combine(
+            screw,
+            translate([5, mso, 5 + i * c_z - i * 10]),
+        )
+    for i in range(2):
+        solid += combine(
+            screw,
+            translate([-5, mso, 5 + i * c_z - i * 10]),
+        )
+
+    return solid
+
+
+def corners(dim_x: float, dim_y: float, height: int = 1):
+    """
+    Create four corners along the specified rectangle that allow to connect parts via M3 screws.
+    """
+    corn = corner(height)
+
+    solid = corn
+    solid += combine(
+        corn,
+        forward(dim_y),
+    )
+    solid += combine(
+        corn,
+        forward(dim_y),
+        right(dim_x),
+    )
+    solid += combine(
+        corn,
+        right(dim_x),
+    )
+
+    return solid
