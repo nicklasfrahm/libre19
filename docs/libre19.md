@@ -19,7 +19,7 @@ Libre19 is an open hardware form factor for 10-inch network shelves and 19-inch 
 ## Use cases 💡
 
 - **Usage of refurbished or legacy hardware**  
-  Most old hardware does not support Open19's form factor, because it tighly in Libre 19 is designed to be compatible with most old hardware.
+  Most old hardware is hard to integrate with Open19, because Open19 requires the usage of specialized connectors for networking and power distribution. Libre19 only provides a modular 19-inch form factor and is thus fully compatible.
 
 - **Homelabs and small to medium enterprises**  
   Libre19 aims to provide a platform that bridges the gap between public-cloud-scale data centers and DIY hardware assemblies in homelabs.
