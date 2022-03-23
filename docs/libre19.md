@@ -1,6 +1,6 @@
 # Libre19 🔩
 
-Libre19 is an open hardware form factor for 19-inch server racks. It is inspired by the [Open19][website-open19] project, but not affiliated with or officially endorsed by Open19 in any way.
+Libre19 is an open hardware form factor for 10-inch network shelves and 19-inch server racks. It is inspired by the [Open19][website-open19] project, but not affiliated with or officially endorsed by Open19 in any way.
 
 ## Features ✨
 
