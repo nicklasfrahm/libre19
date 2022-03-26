@@ -25,3 +25,8 @@ One part of the project is a network stack, which provides a top of rack L3 rout
 ![Network stack CAD preview][img-netstack]
 
 [img-netstack]: ./netstack_v0_assembly.png
+[amazon-psu-youmile]: https://www.amazon.de/dp/B07TZY73H6
+[amazon-psu-angeek]: https://www.amazon.de/dp/B07KPK525R
+[wikipedia-veroboard]: https://en.wikipedia.org/wiki/Veroboard
+[wiki-nftables]: https://wiki.nftables.org/wiki-nftables/index.php/What_is_nftables%3F
+[seeed-cm4router]: https://www.seeedstudio.com/Rapberry-Pi-CM4-Dual-GbE-Carrier-Board-p-4874.html
